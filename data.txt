@@ -1,46 +1,396 @@
-In my younger and more vulnerable years my father gave me some advice
-that I’ve been turning over in my mind ever since.
-
-“Whenever you feel like criticizing anyone,” he told me, “just
-remember that all the people in this world haven’t had the advantages
-that you’ve had.”
-
-He didn’t say any more, but we’ve always been unusually communicative
-in a reserved way, and I understood that he meant a great deal more
-than that. In consequence, I’m inclined to reserve all judgements, a
-habit that has opened up many curious natures to me and also made me
-the victim of not a few veteran bores. The abnormal mind is quick to
-detect and attach itself to this quality when it appears in a normal
-person, and so it came about that in college I was unjustly accused of
-being a politician, because I was privy to the secret griefs of wild,
-unknown men. Most of the confidences were unsought—frequently I have
-feigned sleep, preoccupation, or a hostile levity when I realized by
-some unmistakable sign that an intimate revelation was quivering on
-the horizon; for the intimate revelations of young men, or at least
-the terms in which they express them, are usually plagiaristic and
-marred by obvious suppressions. Reserving judgements is a matter of
-infinite hope. I am still a little afraid of missing something if I
-forget that, as my father snobbishly suggested, and I snobbishly
-repeat, a sense of the fundamental decencies is parcelled out
-unequally at birth.
-
-And, after boasting this way of my tolerance, I come to the admission
-that it has a limit. Conduct may be founded on the hard rock or the
-wet marshes, but after a certain point I don’t care what it’s founded
-on. When I came back from the East last autumn I felt that I wanted
-the world to be in uniform and at a sort of moral attention forever; I
-wanted no more riotous excursions with privileged glimpses into the
-human heart. Only Gatsby, the man who gives his name to this book, was
-exempt from my reaction—Gatsby, who represented everything for which I
-have an unaffected scorn. If personality is an unbroken series of
-successful gestures, then there was something gorgeous about him, some
-heightened sensitivity to the promises of life, as if he were related
-to one of those intricate machines that register earthquakes ten
-thousand miles away. This responsiveness had nothing to do with that
-flabby impressionability which is dignified under the name of the
-“creative temperament”—it was an extraordinary gift for hope, a
-romantic readiness such as I have never found in any other person and
-which it is not likely I shall ever find again. No—Gatsby turned out
-all right at the end; it is what preyed on Gatsby, what foul dust
-floated in the wake of his dreams that temporarily closed out my
-interest in the abortive sorrows and short-winded elations of men.
+Abstract—Typically, universities with a focus on technical
+sciences provide courses where students have to design control
+systems, to implement these control systems on embedded hardware and to verify the functionality of their implementations.
+Hence, the students work in groups and implement practical
+demonstrators based on given problem statements. In order to
+design, implement, and test robotic applications, it is mandatory
+to utilize expertise within the field of robotics and the field of
+embedded systems. The combination of expertise within both
+fields (robotics and embedded systems) is a highly demanded
+skill set, which is required to work for companies with focus on aviation, automotive, and even emerging applications
+for agricultural technology. The technical complexity of these
+applications is increasing almost exponentially, which requires
+abstract model-based approaches to ease the design flow of such
+implementations. This paper introduces a model-based approach
+for students within robotics and/or embedded systems degree
+programs. Moreover, this paper describes the state-of-the-art
+workflow to implement problem statements within the field of
+robotics and embedded systems (tools, approach and test), gives
+and overview of the model-based approach for students within
+these field of applications, and shows the integration of the results
+into courses based on a control system model.
+Index Terms—Robotics Education, Embedded Systems Education, Control Systems, Embedded Software
+I. INTRODUCTION AND MOTIVATION
+The University of Applied Sciences (UAS) Technikum Wien
+[1] offers various bachelor and master degree programs with
+focus on different technical sciences. Specially, the field of
+mechatronics/robotics [2] and the field of embedded systems
+[3] are represented via dedicated bachelor and master degree
+programs. Within these degree programs the students are
+facing various problem statements which are carried out based
+on semester projects. In order to complete these projects the
+students typically use a microcontroller evaluation board, a
+dedicated development environment including compiler and
+debugger and external actuators and sensors. The microcontroller evaluation board is rented in course of the entire
+semester. This motivates the students to train their skill and
+expertise outside the university as well.
+Within the field of robotics Matlab/Simulink [4] is typically
+utilized to design and implement control systems. Within
+Matlab [5] the add-on Simulink [6] offers a simulation and
+model-based design workflow to develop control systems. The
+implemented control systems can be simulated to test their
+functional behavior and the Simulink Coder [7] add-on is an
+appropriate tool to generate executable code to be deployed
+on embedded systems hardware.
+Within the field of embedded systems a dedicated toolchain,
+based on the standard GCC, is utilized to compile executable
+code for example for the Infineon 32-bit Aurix TriCore microcontrollers [8]. This microcontroller family offers a versatile and complex architecture to implement various project
+problem statements which focus on mechatronics, robotics and
+embedded systems.
+Nowadays qualification profiles of robotic and embedded
+systems companies require the students to implement more
+complex robotic problem statements as well as to utilize highend embedded platforms out of box. In order to adapt to
+the evolving qualification profiles it is mandatory to refine
+the content and the problem statements for the students of
+technical degree programs. This means especially for robotics
+and embedded systems students to deal with more complex
+project requirements and to utilize high-end embedded platforms to execute their implemented applications within the
+same amount of time. These changes demand an efficient and
+less time-consuming approach to develop software algorithms.
+Therefore, this paper introduces a model-based approach for
+robotics/embedded systems courses based on the implementation of an specfic use-case. The proposed use-case is an
+example, but the model-based approach itself can be applied
+to other technical education programs on university level.
+II. STATE-OF-THE-ART WORKFLOW IN COURSES
+Recent academic programs within the field of robotics and
+embedded systems which focus on control systems pursue
+a conventional way of designing such systems. The control
+algorithms are implemented in a multi-step manner including different design and simulation tools. The fundamental
+environment comprises Matlab/Simulink for a model-based
+block-design of the intended algorithm, which includes an
+appropriate simulation engine for validation. Simulinks code
+generation feature produces ANSI C code or executables in use
+of a standard GCC compiler. Moreover, the generated code can
+be simulated using the internal Matlab compiler for creating
+an executable only for the simulation.
+1
+2023 9th International Conference on Automation, Robotics and Applications
+978-1-6654-8921-8/23/$31.00 ©2023 IEEE
+2023 9th International Conference on Automation, Robotics and Applications (ICARA) | 978-1-6654-8921-8/23/$31.00 ©2023 IEEE | DOI: 10.1109/ICARA56516.2023.10125977
+Authorized licensed use limited to: CAL POLY POMONA. Downloaded on May 29,2024 at 01:28:03 UTC from IEEE Xplore. Restrictions apply.
+After the initial design, simulation, and generation of an
+algorithm the generated artifacts have to be integrated into
+the embedded software framework, e.g. a real-time operating
+system (RTOS) software structure. Furthermore, the output
+source code from Simulink has to be manually embedded into
+an existing software which can be, in effect, a challenging
+task for inexperienced students. Moreover, the design requires
+a profound knowledge about the top-level software constructs,
+e.g. RTOS mechanisms, in addition to the fundamental comprehension of control algorithms. Messaging, synchronization,
+and task distribution are some of the key aspects of an RTOSbased software.
+A. Advantages of the Model-Based Approach
+Besides the mentioned design setup, each iteration has
+to be performed in a time consuming way as every single
+modification to the algorithm requires the re-generation of
+the source code as well as the re-compiling and re-integration
+into the top-level software. These limitations require new and
+innovative approaches to the design and implementation of
+algorithms based on Simulink for various applications within
+robotics. It is necessary to ease the design cycle by combining
+certain stages and allow different pre-compiled algorithm
+objects, which can be injected into a system dynamically.
+III. CONCEPT OVERVIEW FOR EDUCATIONAL PURPOSES
+As part of an abstraction layer for real-time requirements,
+many embedded devices offer a RTOS as an underlying unit
+between the low-level functions and the application base of
+an intended time-critical embedded software design. New
+and innovative ways of merging algorithm design and RTOS
+constraints are required as control systems and complex data
+flow oriented processing units are tremendous drivers not only
+in conventional embedded systems but also in the field of
+robotics.
+The concept of the recent approach concentrates on the development of a framework, which includes algorithm design, a
+RTOS, and remote development of embedded software within
+the model-based environment in Matlab/Simulink.
+A. PXROS-HR Introduction
+PXROS-HR is a safety-critical RTOS solution provided
+by German company HighTec [9]. It comprises an operating
+system framework, which strongly supports multi-core embedded devices that require several safety features regarding the
+intended field of application. Therefore, it meets several safety
+standards (e.g., ASIL-D) and offers a couple of mechanisms
+to build a system with defined time and data flow constraints.
+These mechanisms include task constructs, messaging, and
+synchronization, to name a few. Furthermore, a dedicated
+memory control unit (MCU) manages the data access of each
+task context, shared data, and other system relevant content.
+Besides MCU, PXROS provides straightforward linker-script
+placement of tasks on an intended processor core, which
+enables not only encapsulation of each tasks own context but
+also of core-wide and system wide reliability and stability of
+the application in case of errors.
+PXROS includes an optional feature regarding the remote
+development of software components in form of loadable tasks
+during the runtime of a platform software on the embedded
+device. These loadable tasks are part of the PxMonitor and
+are in fact, common tasks in form of a super-loop architecture
+containing an initialization and endless loop section.
+B. Model-Based Approach
+The model-based design approach comprises a block-based
+method of developing system models in a graphical supported
+manner within Simulink and Simulink Coder respectively.
+Reusable blocks and connections are used in a model to subsequently generate high-level programming language code and
+executables. Publications of recent implementations [10] [11]
+include target-specific demonstrator applications of modelbased control systems. An advanced approach [12] combines
+the well-established STM32 environment involving its hardware abstraction layer (HAL) library with the Simulink Coder
+add-on. The mentioned approaches result in target-depended
+bare-bone software architectures without any RTOS aspects.
+The recent concept aims on the extension of the model-based
+Simulink environment with specific RTOS mechanisms from
+the previously introduced PXROS especially for academic
+teaching purposes. The following educational benefits can be
+directly derived from the subsequent model-based approach
+[13]:
+1) An improved and comprehensive representation of an
+intended embedded software design
+2) An easy-to-install and ready-to-use solution
+3) No profound prior knowledge about PXROS or Simulink
+required
+Besides elementary advantages of the model-based framework,
+the implementation delivers a high grade of flexibility regarding potential extensions and upgrades not only for students but
+also for the supervising lecturer. The ready-to-use solution can
+be provided in conjunction with a matching PXROS platform
+software, which merely instantiates the required PxMonitor
+slots. This allows a straightforward step into application design
+for students as well as flexible assignment preparation for
+the lecturer. Furthermore, the multi-core principles and RTOS
+fundamental mechanisms can be presented in an easy comprehensible manner and additionally, benefits from modern
+approaches of model-based design and algorithm design in
+Simulink are demonstrated.
+The proposed implementation builds on the one hand, on the
+integration of the PXROS necessities (e.g., compiler, libraries,
+etc.) into Simulink and on the other hand, building a custom
+framework including PXROS specific function blocks. The
+framework is provided in a ready-to-use manner to guarantee
+a straightforward entry point into the proposed environment.
+C. Templates, PXROS AppLibrary, and Back-End C-Library
+The proposed framework targets a simple setup and handling as mentioned in the previous section. Hence, it builds
+2
+Authorized licensed use limited to: CAL POLY POMONA. Downloaded on May 29,2024 at 01:28:03 UTC from IEEE Xplore. Restrictions apply.
+on templates and libraries, which are in fact reusable and
+extendable.
+The back-end C-Library represents the core library where the
+intended RTOS functionalities are coded in the programming
+language C. Either the functions are written manually or the
+functions include function calls to PXROS core functions.
+Furthermore, another library is built upon the previously
+introduced library, called PXROS AppLibrary. This library
+provides the linkage between the back-end C-Functions and
+the Simulink code generation environment. More precisely, the
+AppLibrary delivers a collection of custom Simulink blocks,
+which include typical PXROS functionalities:
+• Messaging
+• Events (task time-base and synchronization)
+• Task runtime configurations
+The blocks are multi-instant-able and parameterize-able but
+also masked, which means that their internal view is locked
+to the user. Besides the underlying libraries, the framework
+relies on templates. On the one hand, model templates as
+default entry points for a concrete model and on the other
+hand, project templates to ease the framework’s dependency
+inclusion. These dependencies include all necessary artifacts to
+utilize the recent approach accordingly, e.g. libraries, PXROS
+core, configuration scripts, etc. Figure 1 illustrates the model
+template, which comprises 3 stages of temporal order regarding the subsequent task frame C-Code generation. Reference
+point (1) shows the initialization section, (2) the pre-start
+section, and (3) includes the endless loop where the task’s
+functionality is located. (1) and (2) are mainly used to set
+configurational aspects and create PXROS objects that are used
+in (3).
+Fig. 1. Default model template.
+Model from Figure 1 includes the minimal but essential model
+setup to the following code generation. After inserting the
+intended blocks from the custom PXROS AppLibrary, code
+generation can be invoked where the source code is generated
+and subsequent an .elf executable restricted for the target
+architecture.
+D. Remote Development
+PXROS provides an outstanding feature, which allows to
+load pre-compiled tasks into a running platform software using
+the PxMonitor extension. These tasks are loaded via .elf files
+into the system dynamically via TCP/IP connection. The host
+(a PC) invokes a modified GNU-Debugger to connect and
+transfer the task onto the embedded base software which
+is already executing on the platform target. The previously
+described model-based approach delivers task frames in the
+form of a binary executable, which flawless match the structure
+of such loadable tasks. Consequently, the remote load of
+tasks provides a process for rapid prototyping and algorithm
+validation.
+IV. INTEGRATION INTO COURSES
+The previously introduced approach provides easy-toimplement demonstrator applications to embedded systems
+lectures with focus on real-time operating systems and robotics
+algorithms design. The considerations behind this abstract
+framework, include the provision and merge of different
+aspects of the development of algorithm oriented embedded
+software for a pre-defined microcontroller family. Students
+shall be able to understand the advantages of the model-based
+idea and create custom algorithms to experience the PXROS
+OS in conjunction with native Simulink signal processing algorithms. The subsequent section describes such demonstrator
+implementations, which can be directly applied to lectures.
+A. Inter-Task Communication Model
+Many RTOS are part of robotic systems and therefore,
+innovative ways as the current approach allow non-embedded
+engineers and students to design and implement software
+for embedded devices. The following application contains a
+simple structured model to establish an inter-task communication model between remote loadable tasks that are created
+in use of the recent model-based approach in conjunction
+with the platform software on the target microcontroller. The
+software uses events for synchronization and messages as
+communication to build a rather common demo application for
+an embedded system: Displaying the communication messages
+(via TCP/IP client) and toggling LEDs on the target board
+based on the event emission. Host Device Target Device
+GNU-Debugger (GDB)
+Platform PXROS-SW
+.elf
+PxMonitor 1
+Remote Debugger 1 192.168.1.211:10401
+Two-Loader TX Model
+PxMonitor 2
+LedServer Task
+Telnet Task
+Remote Debugger 2
+Telnet Message LED Message
+Two-Loader RX Model
+LED Message LED Event
+.elf
+PuTTY Telnet Client
+Telnet Message
+192.168.1.211:10310
+192.168.1.211:10400
+LED Event LED Message
+Telnet Message
+Fig. 2. Inter-Task communication model overview.
+Figure 2 shows the model setup on the top layer of such
+a system. There are two loadable tasks, TX Model and
+RX Model, which are created in separate Simulink models
+3
+Authorized licensed use limited to: CAL POLY POMONA. Downloaded on May 29,2024 at 01:28:03 UTC from IEEE Xplore. Restrictions apply.
+using the proposed framework. The fundamental data flow
+comprises:
+1) The TX Model sends a string as a PXROS message to
+the RX Model task containing simple on/off commands
+regarding one of the board LEDs. The RX Model
+receives the message and forwards it to a platform
+software task in conjunction with a PXROS event in
+a pre-defined tick rate. This results in two blinking
+LEDs on the target. The flow is illustrated in Figure 3
+containing AppLibrary blocks (1) and standard Simulink
+blocks (2).
+2) The TX Model sends a static string message to the
+TCP/IP communication task on the platform software,
+which can be displayed on a Telnet client (e.g., PuTTY).
+Fig. 3. TX Model functionality.
+Figure 4 illustrates the RX Model from its top-level perspective within the Simulink framework. Only a few blocks from
+the custom AppLibrary are required to set the constraints and
+create appropriate artifacts for the task frame of the model.
+E.g., creating a mailbox, events, task exit routine etc.
+Fig. 4. RX Model functionality.
+Put simply, the application proves that the recent approach
+allows a straightforward way of creating an inter-task communication model without in-depth knowledge of the specific
+communication and synchronization details from the underlying PXROS operating system. In addition to that, multiple
+loadable tasks demonstrate the advantages of modularization
+of such dynamic tasks for prototyping purposes.
+B. DC-Motor Model
+The intended demonstrator application comprises an algorithm that represents a closed-loop control system within a
+single task with certain time constraints. The functionality is
+pointless from a control algorithm designer’s view however,
+the key aspect represents the merge of PXROS functionality
+with control algorithms in use of the model-based remote
+development approach. The platform software on the microcontroller includes PXROS and the PxMonitor extension and
+is connected to the host PC using TCP/IP as illustrated in
+Figure 5. Host Device
+Target Device
+GNU-Debugger (GDB)
+Platform PXROS-SW
+.elf
+PxMonitor 1
+Remote Debugger 1
+DC-Motor Model
+MotorSim Task
+Telnet Task
+Closed-Loop Control
+PuTTY Telnet Client
+Current Speed Message
+192.168.1.211:10310
+192.168.1.211:10400
+Set Speed Message
+Current Speed Message
+Set Speed Message
+Current Speed Message
+Fig. 5. DC-Motor model overview.
+The intended algorithm represents a fictive speed control
+system of a DC-Motor where the controller and the transfer
+function of the motor behavior are located in a single loadable
+task frame using the proposed model approach. The loadable
+task frame communicates via messages with the platform
+software that simulates the set point of the motor’s speed
+value. Additionally, the platform software reads back the
+current speed message from the control loop’s feedback and
+transmits it to a console on the PC using a TCP/IP instance.
+A model template is used to build the recent demonstrator
+application from scratch including a few PXROS AppLibrary
+blocks as well as native Simulink blocks to generate a task
+frame executable. The project template is utilized to set up
+the environment accordingly.
+Fig. 6. DC-Motor model endless loop.
+Figure 6 shows the endless loop as part of the model. It merely
+contains PXROS blocks for messaging and a custom controller
+4
+Authorized licensed use limited to: CAL POLY POMONA. Downloaded on May 29,2024 at 01:28:03 UTC from IEEE Xplore. Restrictions apply.
+block for the fictive DC-Motor. The inside of the motor block
+is illustrated in Figure 7 whereby the transfer function for the
+motor is referenced from [14].
+Fig. 7. DC-Motor block.
+The model generates both specific PXROS source code and
+standard control algorithm code from the introduced model
+before the compiling process creates the loadable binary file.
+After successfully loading the file into the target platform
+via PxMonitor in use of the GNU-Debugger, the system can
+be observed on the PC console receiving the current speed
+values in Figure 8. The illustration shows the raw speed values
+of the initial regulation (1) and the results of a validation
+and verification process (2) of the same values. This process
+consists of software-in-the-loop (SIL) for the verification of the
+generated source code and the internal Simulink simulation.
+1
+2
+Fig. 8. DC-Motor system observation.
+The outcome of this demonstrator application shows straightforward generation of a custom algorithm in conjunction with
+the PXROS real-time requirements. It is notable that the
+design does not require a single line of manually written code
+except the platform software implementations (e.g., PxMonitor
+instance, logging communication to PC via TCP/IP, etc.).
+Consequently, the abstract design method allows the developer
+to concentrate on algorithm design and simulation without
+dealing with details of the communication-flow oriented challenges within the real-time OS.
+V. CONCLUSION
+Within this paper a concept is introduced, which integrates a
+model-based development approach into courses dedicated to
+robotics and embedded systems. This is done by utilizing features, like remote loadable tasks, of the PXROS safety-critical
+operating system. The benefits of the model-based design is
+the improved representation of the embedded software design
+contrary to the standard way of manually embedding the
+output source code from Simulink into an existing embedded
+framework. The graphical representation of reusable blocks
+and connection assists students in their understanding of complex embedded software. The proposed framework features a
+set of libraries and ready to use templates. Furthermore, this
+paper demonstrates this concept by describing a simple DC
+motor model.
+Further improvements regarding the utilization of the modelbased approach for other embedded platforms and according
+technical education programs will be to port PXROS to other
+microcontrollers and adapt minor changes to the toolchain files
+within Matlab/Simulink.
+ACKNOWLEDGMENT
+This work has been supported within the industry cooperation Emerging Applications Lab managed by Infineon
+Technologies Austria AG [15].
